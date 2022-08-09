@@ -48,7 +48,7 @@ func (p *Parser) CompileWithFlag() {
 		if IsStaticDeclaration(line) || (i+1 < len(lines) && IsFunctionDeclaration(line, lines[i+1])) {
 			isBeforeFlag = false
 			if !IsStaticDeclaration(line) {
-				p.headers = append(p.headers, "", fmt.Sprintf("%s;", line))
+				p.headers = append(p.headers, fmt.Sprintf("%s;", line), "")
 			}
 		}
 
