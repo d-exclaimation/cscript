@@ -27,7 +27,8 @@ func IsDefinition(line string) bool {
 }
 
 func IsFunctionDeclaration(line string, nextLine string) bool {
-	return strings.HasSuffix(line, ")") &&
-		strings.Contains(line, "(") &&
-		strings.HasSuffix(nextLine, "{")
+	clean := strings.TrimSpace(line)
+	return strings.HasSuffix(clean, ")") &&
+		strings.Contains(clean, "(") &&
+		strings.HasSuffix(strings.TrimSpace(nextLine), "{")
 }

@@ -22,12 +22,9 @@ type Parser struct {
 }
 
 func NewParser(filename string) (*Parser, error) {
-	module, _, found := strings.Cut(filename, ".c")
-	if !found {
-        module, _, found = strings.Cut(filename, ".h")
-        if !found {
-		    return nil, fmt.Errorf("filename of %s is not a C source code", filename)
-        }
+	module, err := module(filename)
+	if err != nil {
+		return nil, fmt.Errorf("filename of %s is not a C source code", filename)
 	}
 	content, err := os.ReadFile(filename)
 	if err != nil {
@@ -48,16 +45,20 @@ func (p *Parser) CompileWithFlag() {
 	isBeforeFlag := true
 	lines := strings.Split(p.content, "\n")
 	for i, line := range lines {
+		fmt.Print(line)
 		if i+1 < len(lines) && IsFunctionDeclaration(line, lines[i+1]) {
+			fmt.Print(" -> Found function")
 			isBeforeFlag = false
 			p.headers = append(p.headers, "", fmt.Sprintf("%s;", line))
 		}
 
 		if isBeforeFlag || IsDefinition(line) {
+			fmt.Print(" -> Found definition")
 			p.headers = append(p.headers, line)
 		} else {
 			p.sources = append(p.sources, line)
 		}
+		fmt.Print("\n")
 	}
 }
 
@@ -65,12 +66,7 @@ func (p *Parser) Generate() error {
 	if err := os.WriteFile(p.module+".c", []byte(p.sourceContent()), 0644); err != nil {
 		return err
 	}
-	f, err := os.Create(p.module + ".h")
-	if err != nil {
-		return err
-	}
-	_, err = f.WriteString(p.headerContent())
-	if err != nil {
+	if err := os.WriteFile(p.module+".h", []byte(p.headerContent()), 0644); err != nil {
 		return err
 	}
 	return nil
