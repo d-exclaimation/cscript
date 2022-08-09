@@ -15,8 +15,6 @@ func IsDefinition(line string) bool {
 		"#include",
 		"#define",
 		"#typedef",
-		"struct",
-		"enum",
 	}
 	for _, suffix := range defSuffix {
 		if strings.HasPrefix(line, suffix) {
