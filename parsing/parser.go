@@ -24,7 +24,10 @@ type Parser struct {
 func NewParser(filename string) (*Parser, error) {
 	module, _, found := strings.Cut(filename, ".c")
 	if !found {
-		return nil, fmt.Errorf("filename of %s is not a C source code", filename)
+        module, _, found = strings.Cut(filename, ".h")
+        if !found {
+		    return nil, fmt.Errorf("filename of %s is not a C source code", filename)
+        }
 	}
 	content, err := os.ReadFile(filename)
 	if err != nil {
