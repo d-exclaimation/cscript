@@ -45,20 +45,16 @@ func (p *Parser) CompileWithFlag() {
 	isBeforeFlag := true
 	lines := strings.Split(p.content, "\n")
 	for i, line := range lines {
-		fmt.Print(line)
 		if i+1 < len(lines) && IsFunctionDeclaration(line, lines[i+1]) {
-			fmt.Print(" -> Found function")
 			isBeforeFlag = false
 			p.headers = append(p.headers, "", fmt.Sprintf("%s;", line))
 		}
 
 		if isBeforeFlag || IsDefinition(line) {
-			fmt.Print(" -> Found definition")
 			p.headers = append(p.headers, line)
 		} else {
 			p.sources = append(p.sources, line)
 		}
-		fmt.Print("\n")
 	}
 }
 
