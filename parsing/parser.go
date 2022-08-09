@@ -45,9 +45,11 @@ func (p *Parser) CompileWithFlag() {
 	isBeforeFlag := true
 	lines := strings.Split(p.content, "\n")
 	for i, line := range lines {
-		if i+1 < len(lines) && IsFunctionDeclaration(line, lines[i+1]) {
+		if IsStaticDeclaration(line) || (i+1 < len(lines) && IsFunctionDeclaration(line, lines[i+1])) {
 			isBeforeFlag = false
-			p.headers = append(p.headers, "", fmt.Sprintf("%s;", line))
+			if !IsStaticDeclaration(line) {
+				p.headers = append(p.headers, "", fmt.Sprintf("%s;", line))
+			}
 		}
 
 		if isBeforeFlag || IsDefinition(line) {

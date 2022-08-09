@@ -30,3 +30,7 @@ func IsFunctionDeclaration(line string, nextLine string) bool {
 		strings.Contains(clean, "(") &&
 		strings.HasSuffix(strings.TrimSpace(nextLine), "{")
 }
+
+func IsStaticDeclaration(line string) bool {
+	return strings.HasPrefix(strings.TrimSpace(line), "static")
+}
