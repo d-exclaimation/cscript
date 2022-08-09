@@ -15,8 +15,8 @@ import (
 )
 
 func main() {
-	filename := os.Args[1]
-	p, err := parsing.NewParser(filename)
+	input, output := filenames()
+	p, err := parsing.NewParser(input, output)
 	if err != nil {
 		log.Fatalln(err)
 	}
