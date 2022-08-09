@@ -11,13 +11,15 @@ package parsing
 import "strings"
 
 func IsDefinition(line string) bool {
-	defSuffix := []string{
+	prefixes := []string{
 		"#include",
 		"#define",
 		"#typedef",
+		"/**",
+		" *",
 	}
-	for _, suffix := range defSuffix {
-		if strings.HasPrefix(line, suffix) {
+	for _, prefix := range prefixes {
+		if strings.HasPrefix(line, prefix) {
 			return true
 		}
 	}
