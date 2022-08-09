@@ -16,17 +16,18 @@ import (
 
 type Parser struct {
 	content string
-	module  string
+	input   string
+	output  string
 	headers []string
 	sources []string
 }
 
-func NewParser(filename string) (*Parser, error) {
-	module, err := module(filename)
+func NewParser(input string, output string) (*Parser, error) {
+	inputName, err := module(input)
 	if err != nil {
-		return nil, fmt.Errorf("filename of %s is not a C source code", filename)
+		return nil, fmt.Errorf("filename of %s is not a C source code", input)
 	}
-	content, err := os.ReadFile(filename)
+	content, err := os.ReadFile(input)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +36,8 @@ func NewParser(filename string) (*Parser, error) {
 	}
 	return &Parser{
 		content: string(content),
-		module:  module,
+		input:   inputName,
+		output:  output,
 		headers: make([]string, 0),
 		sources: make([]string, 0),
 	}, nil
@@ -61,10 +63,10 @@ func (p *Parser) CompileWithFlag() {
 }
 
 func (p *Parser) Generate() error {
-	if err := os.WriteFile(p.module+".c", []byte(p.sourceContent()), 0644); err != nil {
+	if err := os.WriteFile(p.output+".c", []byte(p.sourceContent()), 0644); err != nil {
 		return err
 	}
-	if err := os.WriteFile(p.module+".h", []byte(p.headerContent()), 0644); err != nil {
+	if err := os.WriteFile(p.output+".h", []byte(p.headerContent()), 0644); err != nil {
 		return err
 	}
 	return nil

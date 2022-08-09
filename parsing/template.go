@@ -17,12 +17,12 @@ import (
 func (p *Parser) sourceContent() string {
 	before := []string{
 		"//",
-		fmt.Sprintf("//  %s.c", p.module),
+		fmt.Sprintf("//  %s.c", p.input),
 		"//",
 		fmt.Sprintf("//  Created by d-exclaimation on %s.", time.Now().Format("01-02-2006 15:04:05")),
 		"//",
 		"",
-		fmt.Sprintf("#include \"%s.h\"", p.module),
+		fmt.Sprintf("#include \"%s.h\"", p.input),
 		"",
 	}
 	return strings.Join(append(before, p.sources...), "\n")
@@ -31,13 +31,13 @@ func (p *Parser) sourceContent() string {
 func (p *Parser) headerContent() string {
 	before := []string{
 		"//",
-		fmt.Sprintf("//  %s.c", p.module),
+		fmt.Sprintf("//  %s.c", p.input),
 		"//",
 		fmt.Sprintf("//  Created by d-exclaimation on %s.", time.Now().Format("01-02-2006 15:04:05")),
 		"//",
 		"",
-		fmt.Sprintf("#ifndef %s_H", strings.ToUpper(p.module)),
-		fmt.Sprintf("#define %s_H", strings.ToUpper(p.module)),
+		fmt.Sprintf("#ifndef %s_H", strings.ToUpper(p.input)),
+		fmt.Sprintf("#define %s_H", strings.ToUpper(p.input)),
 		"",
 	}
 	curr := append(before, p.headers...)

@@ -11,6 +11,7 @@ import (
 	"github.com/d-exclaimation/cscript/parsing"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -24,4 +25,15 @@ func main() {
 	if err := p.Generate(); err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func filenames() (string, string) {
+	input := os.Args[1]
+	output := ""
+	if len(os.Args) < 3 {
+		output = strings.Split(input, ".")[0]
+	} else {
+		output = os.Args[2]
+	}
+	return input, output
 }
